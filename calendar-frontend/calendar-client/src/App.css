@@ -1,0 +1,104 @@
+/* General app styling */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Calendar container */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  width: 350px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+/* Weekday header grid */
+.calendar-grid.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+/* Calendar day grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  width: 100%;
+}
+
+/* Weekday cells */
+.weekday {
+  font-weight: bold;
+  text-align: center;
+  padding: 6px 0;
+  background: #f2f2f2;
+  border: 1px solid #ddd;
+}
+
+/* Calendar cells */
+.cell {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: bold;
+  background: #fff;
+}
+
+/* Selected date style */
+.cell.selected {
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Disabled (non-current-month) dates */
+.cell.disabled {
+  color: #ccc;
+  background: #f9f9f9;
+  cursor: default;
+}
