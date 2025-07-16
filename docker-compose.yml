@@ -1,0 +1,19 @@
+version: '3'
+services:
+  backend:
+    build: ./calendar-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./calendar-backend:/app
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build: ./calendar-frontend/calendar-client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./calendar-frontend/calendar-client:/app
+    depends_on:
+      - backend
