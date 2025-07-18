@@ -1,9 +1,7 @@
-// Load environment variables from the project root
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();  // Loads from .env in backend OR from Render dashboard
 
 const mysql = require('mysql2');
 
-// Connect using the Railway-provided URL
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
 connection.connect((err) => {
@@ -15,4 +13,5 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
+
 
