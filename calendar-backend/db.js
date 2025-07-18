@@ -1,17 +1,13 @@
-require('dotenv').config();  // Loads from .env in backend OR from Render dashboard
+require('dotenv').config(); // Loads .env
 
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise'); // Use promise-based client
 
-const connection = mysql.createConnection(process.env.DATABASE_URL);
-
-connection.connect((err) => {
-  if (err) {
-    console.error('Database connection failed:', err.stack);
-    return;
-  }
-  console.log('Connected to Railway MySQL');
+// Create connection pool (recommended)
+const pool = mysql.createPool({
+  uri: process.env.DATABASE_URL
 });
 
-module.exports = connection;
+module.exports = pool;
+
 
 
