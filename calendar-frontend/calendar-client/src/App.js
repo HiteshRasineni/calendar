@@ -4,8 +4,9 @@ import Calendar from "./components/Calendar";
 import EventForm from "./components/EventForm";
 import EventList from "./components/EventList";
 import Auth from "./components/Auth";
+import AllTasks from "./components/AllTasks";
 import API from "./api";
-import { format, addMonths, subMonths } from "date-fns";
+import { format, addMonths, subMonths, parseISO } from "date-fns";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import About from "./components/About";
 
@@ -16,19 +17,40 @@ const App = () => {
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
-    const res = await API.get("/events");
-    setEvents(res.data);
+    try {
+      const res = await API.get("/events");
+      setEvents(res.data);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
   };
 
   const addEvent = async (text) => {
-    const event_date = format(selectedDate, 'yyyy-MM-dd');
-    await API.post("/events", { event_text: text, event_date });
-    fetchEvents();
+    try {
+      const event_date = format(selectedDate, 'yyyy-MM-dd');
+      await API.post("/events", { event_text: text, event_date });
+      fetchEvents();
+    } catch (error) {
+      console.error("Error adding event:", error);
+    }
   };
 
   const deleteEvent = async (id) => {
-    await API.delete(`/events/${id}`);
-    fetchEvents();
+    try {
+      await API.delete(`/events/${id}`);
+      fetchEvents();
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
+
+  const editEvent = async (id, newText) => {
+    try {
+      await API.put(`/events/${id}`, { event_text: newText });
+      fetchEvents();
+    } catch (error) {
+      console.error("Error editing event:", error);
+    }
   };
 
   useEffect(() => {
@@ -47,57 +69,76 @@ const App = () => {
             <h1 className="app-title">My Calendar</h1>
             <nav className="navigation-links">
               <Link to="/" className="nav-link">Home</Link>
+              <Link to="/all-tasks" className="nav-link">All Tasks</Link>
               <Link to="/about" className="nav-link">About</Link>
             </nav>
           </div>
         </header>
-        
+
         <main className="main-content">
           <Routes>
             <Route path="/about" element={<About />} />
-            <Route path="/" element={
-              <div className="calendar-container">
-                <div className="calendar-section">
-                  <div className="month-navigation">
-                    <button 
-                      className="nav-button prev"
-                      onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                    >
-                      ‹
-                    </button>
-                    <h2 className="month-title">{format(currentMonth, "MMMM yyyy")}</h2>
-                    <button 
-                      className="nav-button next"
-                      onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-                    >
-                      ›
-                    </button>
+            <Route 
+              path="/all-tasks" 
+              element={
+                <AllTasks 
+                  events={events} 
+                  onDelete={deleteEvent} 
+                  onEdit={editEvent} 
+                />
+              } 
+            />
+            <Route 
+              path="/" 
+              element={
+                <div className="calendar-container">
+                  <div className="calendar-section">
+                    <div className="month-navigation">
+                      <button 
+                        className="nav-button prev"
+                        onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+                      >
+                        ‹
+                      </button>
+                      <h2 className="month-title">{format(currentMonth, "MMMM yyyy")}</h2>
+                      <button 
+                        className="nav-button next"
+                        onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+                      >
+                        ›
+                      </button>
+                    </div>
+
+                    <Calendar 
+                      currentMonth={currentMonth} 
+                      selectedDate={selectedDate} 
+                      onDateClick={setSelectedDate} 
+                    />
                   </div>
-                  
-                  <Calendar 
-                    currentMonth={currentMonth} 
-                    selectedDate={selectedDate} 
-                    onDateClick={setSelectedDate} 
-                  />
+
+                  <div className="events-section">
+                    <EventForm onAddEvent={addEvent} />
+                    <EventList 
+                      events={events.filter(e => 
+                        format(parseISO(e.event_date), 'yyyy-MM-dd') === selectedDateString
+                      )} 
+                      selectedDate={selectedDateString}
+                      onDelete={deleteEvent} 
+                    />
+                  </div>
+
+                  <button 
+                    className="logout-button"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setLoggedIn(false);
+                    }}
+                  >
+                    Logout
+                  </button>
                 </div>
-                
-                <div className="events-section">
-                  <EventForm onAddEvent={addEvent} />
-                  <EventList 
-                    events={events.filter(e => format(new Date(e.event_date), 'yyyy-MM-dd') === selectedDateString)} 
-                    selectedDate={selectedDateString}
-                    onDelete={deleteEvent} 
-                  />
-                </div>
-                
-                <button 
-                  className="logout-button"
-                  onClick={() => { localStorage.removeItem("token"); setLoggedIn(false); }}
-                >
-                  Logout
-                </button>
-              </div>
-            } />
+              } 
+            />
           </Routes>
         </main>
       </div>
