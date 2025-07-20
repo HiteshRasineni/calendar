@@ -42,36 +42,69 @@ const App = () => {
   return (
     <Router>
       <div className="app">
-        <h1>My Calendar</h1>
-        <nav style={{ marginBottom: '1rem' }}>
-          <Link to="/">Home</Link> | <Link to="/about">About</Link>
-        </nav>
-        <Routes>
-          <Route path="/about" element={<About />} />
-          <Route path="/" element={
-            <>
-              <div className="navigation">
-                <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>‹</button>
-                <h2>{format(currentMonth, "MMMM yyyy")}</h2>
-                <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>›</button>
+        <header className="app-header">
+          <div className="header-content">
+            <h1 className="app-title">My Calendar</h1>
+            <nav className="navigation-links">
+              <Link to="/" className="nav-link">Home</Link>
+              <Link to="/about" className="nav-link">About</Link>
+            </nav>
+          </div>
+        </header>
+        
+        <main className="main-content">
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={
+              <div className="calendar-container">
+                <div className="calendar-section">
+                  <div className="month-navigation">
+                    <button 
+                      className="nav-button prev"
+                      onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+                    >
+                      ‹
+                    </button>
+                    <h2 className="month-title">{format(currentMonth, "MMMM yyyy")}</h2>
+                    <button 
+                      className="nav-button next"
+                      onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+                    >
+                      ›
+                    </button>
+                  </div>
+                  
+                  <Calendar 
+                    currentMonth={currentMonth} 
+                    selectedDate={selectedDate} 
+                    onDateClick={setSelectedDate} 
+                  />
+                </div>
+                
+                <div className="events-section">
+                  <EventForm onAddEvent={addEvent} />
+                  <EventList 
+                    events={events.filter(e => format(new Date(e.event_date), 'yyyy-MM-dd') === selectedDateString)} 
+                    selectedDate={selectedDateString}
+                    onDelete={deleteEvent} 
+                  />
+                </div>
+                
+                <button 
+                  className="logout-button"
+                  onClick={() => { localStorage.removeItem("token"); setLoggedIn(false); }}
+                >
+                  Logout
+                </button>
               </div>
-              <Calendar currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={setSelectedDate} />
-              <EventForm onAddEvent={addEvent} />
-              <EventList 
-                events={events.filter(e => format(new Date(e.event_date), 'yyyy-MM-dd') === selectedDateString)} 
-                selectedDate={selectedDateString}
-                onDelete={deleteEvent} 
-              />
-              <button onClick={() => { localStorage.removeItem("token"); setLoggedIn(false); }}>
-                Logout
-              </button>
-            </>
-          } />
-        </Routes>
+            } />
+          </Routes>
+        </main>
       </div>
     </Router>
   );
 };
 
 export default App;
+
 

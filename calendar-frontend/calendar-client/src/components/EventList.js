@@ -1,17 +1,23 @@
 import React from "react";
 
 const EventList = ({ events, selectedDate, onDelete }) => (
-  <div>
+  <div className="event-list">
     <h3>Events for {selectedDate}</h3>
     {events.length === 0 ? (
-      <p>No events for this date.</p>
+      <div className="no-events">
+        <p>No events scheduled for this date.</p>
+      </div>
     ) : (
       <ul>
         {events.map((e) => (
-          <li key={e.id}>
-            {e.event_text}
-            <button onClick={() => onDelete(e.id)} style={{ marginLeft: "10px" }}>
-              ❌
+          <li key={e.id} className="event-item">
+            <span className="event-text">{e.event_text}</span>
+            <button 
+              className="delete-button" 
+              onClick={() => onDelete(e.id)}
+              title="Delete event"
+            >
+              ✕
             </button>
           </li>
         ))}
@@ -21,4 +27,5 @@ const EventList = ({ events, selectedDate, onDelete }) => (
 );
 
 export default EventList;
+
 

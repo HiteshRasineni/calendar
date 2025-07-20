@@ -2,11 +2,11 @@ import React from 'react';
 
 function About() {
   return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h2>About the Creator</h2>
-      <p>Hitesh Rasineni</p>
+    <div className="about-container">
+      <h2 className="about-title">About the maker</h2>
+      <p className="about-text">Hitesh</p>
     </div>
   );
 }
 
-export default About; 
+export default About;
