@@ -586,6 +586,11 @@ body {
   font-weight: 500;
 }
 
+.task-text.completed {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
 .task-actions {
   display: flex;
   gap: 8px;

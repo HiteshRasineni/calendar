@@ -53,6 +53,15 @@ const App = () => {
     }
   };
 
+  const toggleComplete = async (id, completed) => {
+    try {
+      await API.patch(`/events/${id}/complete`, { completed });
+      fetchEvents();
+    } catch (error) {
+      console.error("Error updating completion status:", error);
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) fetchEvents();
   }, [loggedIn]);
@@ -85,6 +94,7 @@ const App = () => {
                   events={events} 
                   onDelete={deleteEvent} 
                   onEdit={editEvent} 
+                  onToggleComplete={toggleComplete}
                 />
               } 
             />
@@ -124,6 +134,7 @@ const App = () => {
                       )} 
                       selectedDate={selectedDateString}
                       onDelete={deleteEvent} 
+                      onToggleComplete={toggleComplete}
                     />
                   </div>
 

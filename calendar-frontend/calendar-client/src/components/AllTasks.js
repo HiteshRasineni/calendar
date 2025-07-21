@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { format, getYear, parseISO } from "date-fns";
 
-const AllTasks = ({ events, onDelete, onEdit }) => {
+const AllTasks = ({ events, onDelete, onEdit, onToggleComplete }) => {
   const [selectedYear, setSelectedYear] = useState(getYear(new Date()));
   const [editingEvent, setEditingEvent] = useState(null);
   const [editText, setEditText] = useState("");
@@ -102,7 +102,12 @@ const AllTasks = ({ events, onDelete, onEdit }) => {
                   </div>
                 ) : (
                   <div className="task-display">
-                    <span className="task-text">{event.event_text}</span>
+                    <input
+                      type="checkbox"
+                      checked={!!event.completed}
+                      onChange={() => onToggleComplete(event.id, !event.completed)}
+                    />
+                    <span className={`task-text${event.completed ? ' completed' : ''}`}>{event.event_text}</span>
                     <div className="task-actions">
                       <button 
                         onClick={() => handleEditStart(event)}

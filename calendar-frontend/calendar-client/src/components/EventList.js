@@ -1,6 +1,6 @@
 import React from "react";
 
-const EventList = ({ events, selectedDate, onDelete }) => (
+const EventList = ({ events, selectedDate, onDelete, onToggleComplete }) => (
   <div className="event-list">
     <h3>Events for {selectedDate}</h3>
     {events.length === 0 ? (
@@ -11,7 +11,12 @@ const EventList = ({ events, selectedDate, onDelete }) => (
       <ul>
         {events.map((e) => (
           <li key={e.id} className="event-item">
-            <span className="event-text">{e.event_text}</span>
+            <input
+              type="checkbox"
+              checked={!!e.completed}
+              onChange={() => onToggleComplete(e.id, !e.completed)}
+            />
+            <span className={`event-text${e.completed ? ' completed' : ''}`}>{e.event_text}</span>
             <button 
               className="delete-button" 
               onClick={() => onDelete(e.id)}

@@ -44,5 +44,15 @@ router.put("/:id", auth, async (req, res) => {
   res.json({ message: "Updated" });
 });
 
+// ✅ PATCH (Mark event as complete/incomplete)
+router.patch("/:id/complete", auth, async (req, res) => {
+  const { completed } = req.body;
+  await db.execute(
+    "UPDATE events SET completed = ? WHERE id = ? AND user_id = ?",
+    [completed, req.params.id, req.userId]
+  );
+  res.json({ message: "Status updated" });
+});
+
 module.exports = router;
 
