@@ -1,5 +1,16 @@
 const express = require("express");
 const cors = require("cors");
+const { syncEventsAndUsers } = require("./syncDelta");
+
+app.get("/sync", async (req, res) => {
+  try {
+    await syncEventsAndUsers();
+    res.status(200).send("✅ Sync completed");
+  } catch (err) {
+    console.error("❌ Sync failed:", err.message);
+    res.status(500).send("❌ Sync failed");
+  }
+});
 
 const app = express();
 

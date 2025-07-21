@@ -34,7 +34,8 @@ async function syncTable(tableName, columns, remoteConfig, localConfig) {
   }
 }
 
-(async () => {
+// Wrap the sync logic in a function for reuse
+async function syncEventsAndUsers() {
   const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   const remoteConfig = {
@@ -73,4 +74,13 @@ async function syncTable(tableName, columns, remoteConfig, localConfig) {
   } catch (err) {
     console.error('🛑 Sync aborted due to error.');
   }
-})();
+}
+
+// Only run directly if called via CLI
+if (require.main === module) {
+  syncEventsAndUsers();
+}
+
+module.exports = {
+  syncEventsAndUsers
+};

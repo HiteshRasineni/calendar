@@ -140,7 +140,14 @@ const App = () => {
 
                   <button 
                     className="logout-button"
-                    onClick={() => {
+                    onClick={async () => {
+                      try {
+                        await fetch(`${process.env.REACT_APP_API_URL}/sync`);
+                        console.log("✅ Sync triggered on logout");
+                      } catch (error) {
+                        console.error("❌ Sync failed on logout:", error);
+                      }
+
                       localStorage.removeItem("token");
                       setLoggedIn(false);
                     }}
