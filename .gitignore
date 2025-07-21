@@ -1,2 +1,5 @@
 node_modules/ 
 calendar-frontend/calendar-client/build/ 
+calendar-backend/.env
+calendar-backend/last_sync.txt
+calendar-backend/node_modules/

@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules
+
+# Build/output artifacts
+dist
+build
+
+# Sync-related file
+last_sync.txt
+
+# Logs
+*.log
+
+# Environment/config files
+.env
+.env.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# IDE/editor folders
+.vscode
+.idea
+

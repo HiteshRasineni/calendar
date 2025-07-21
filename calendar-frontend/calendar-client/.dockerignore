@@ -1,0 +1,28 @@
+# Ignore node_modules and build output
+**/node_modules
+**/build
+**/dist
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# IDE/editor folders
+.vscode
+.idea
+
+# Environment/config files (optional)
+.env
+.env.local
