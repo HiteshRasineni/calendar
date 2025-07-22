@@ -29,7 +29,7 @@ const Calendar = ({ currentMonth, selectedDate, onDateClick }) => {
         className={`cell ${!isSameMonth(day, monthStart) ? "disabled" : ""} ${
           isSameDay(day, selectedDate) ? "selected" : ""
         }`}
-        key={day}
+        key={day.toISOString()}
         onClick={() => onDateClick(cloneDay)}
       >
         <span>{formattedDate}</span>
@@ -55,3 +55,4 @@ const Calendar = ({ currentMonth, selectedDate, onDateClick }) => {
 };
 
 export default Calendar;
+
